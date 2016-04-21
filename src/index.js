@@ -1,3 +1,4 @@
+import Url from 'url'
 import { Router as ExpressRouter } from 'express'
 import { sortBy, map, template } from 'lodash'
 
@@ -62,8 +63,10 @@ export class Router {
   }
 
   options(req) {
+
     return {
       params: req.params,
+      query: req.query,
       data: req.body,
       headers: req.headers
     }
