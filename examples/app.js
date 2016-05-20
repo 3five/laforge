@@ -3,6 +3,10 @@ import Express from 'express'
 
 class Test extends Router {
 
+  testMethod() {
+    return 'test'
+  }
+
   @route('get', '/foo')
   foo(opts, http) {
     return Promise.resolve('foo')
@@ -24,7 +28,7 @@ class Baz extends Test {
 
   @route('get', '/bar')
   bar(opts, http) {
-    return Promise.resolve('overrride!!')
+    return Promise.resolve(`overrride!!-${this.testMethod()}`)
   }
 
 }
