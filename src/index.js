@@ -79,8 +79,9 @@ export function route(method = 'get', uri, priority = 100) {
     descriptor.initializer = function() {
       let handler = descriptor.value.bind(target)
       let routes = this.routes = merge([], this.routes)
-      let routeDef = { method, uri, priority, handler }
-      upsert(routes, {uri}, routeDef)
+      let identifier = `${method.toLowerCase()} ${uri}`
+      let routeDef = { method, uri, priority, handler, identifier }
+      upsert(routes, {identifier}, routeDef)
     }
     return descriptor
   }
