@@ -33,7 +33,7 @@ export default class Router {
     return (req, res)=> {
       const opts = this.options(req)
       const http = { req, res }
-      const handler = route.handler(opts, http)
+      const handler = route.handler.call(this, opts, http)
       Promise.resolve(handler)
         .then(result => res.json(this.okay(result)))
         .catch(err => {
