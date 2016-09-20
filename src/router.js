@@ -11,8 +11,12 @@ export default class Router {
   registerRoutes() {
     let routes = this.buildRoutes()
     for (let route of routes) {
-      let method = route.method.toLowerCase()
-      this.router[method](route.uri, this.genericHandler(route))
+      if (route.middleware) {
+        this.router.use(route.uri, this.middlwareHandler(route))
+      } else {
+        let method = route.method.toLowerCase()
+        this.router[method](route.uri, this.genericHandler(route))
+      }
     }
   }
 
@@ -27,6 +31,14 @@ export default class Router {
   handler() {
     this.registerRoutes()
     return this.router
+  }
+
+  middlwareHandler(route) {
+    return (req, res, next)=> {
+      const opts = this.options(req)
+      const http = { req, res }
+      return route.handler.call(this, opts, http, next)
+    }
   }
 
   genericHandler(route) {
@@ -53,6 +65,7 @@ export default class Router {
       ret.message = obj.message
       ret.stack = obj.stack
     }
+    console.log(obj.stack)
     return ret
   }
 

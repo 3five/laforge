@@ -1,10 +1,18 @@
-import {Router, route} from '../lib'
+import {Router, route, middleware} from '../lib'
 import Express from 'express'
 
 class Test extends Router {
 
-  testMethod() {
-    return 'test'
+  @middleware('/', 2)
+  testMethod(opts, http, next) {
+    console.log('middle!')
+    next()
+  }
+
+  @middleware('/foo', 1)
+  tester(opts, http, next) {
+    console.log('foo!')
+    next()
   }
 
   @route('get', '/foo')
